@@ -280,40 +280,41 @@ void lua_tinker::print_error(lua_State *L, const char* fmt, ...)
 void lua_tinker::enum_stack(lua_State *L)
 {
 	int top = lua_gettop(L);
-	print_error(L, "Type:%d", top);
-	for(int i=1; i<=lua_gettop(L); ++i)
+    print_error(L, "----------LUA STACK(%d elems)----------", top);
+	for(int i=top; i>=1; --i)
 	{
 		switch(lua_type(L, i))
 		{
 		case LUA_TNIL:
-			print_error(L, "\t%s", lua_typename(L, lua_type(L, i)));
+			print_error(L, "%d. %s", i, lua_typename(L, lua_type(L, i)));
 			break;
 		case LUA_TBOOLEAN:
-			print_error(L, "\t%s	%s", lua_typename(L, lua_type(L, i)), lua_toboolean(L, i)?"true":"false");
+			print_error(L, "%d. %s	%s", i, lua_typename(L, lua_type(L, i)), lua_toboolean(L, i)?"true":"false");
 			break;
 		case LUA_TLIGHTUSERDATA:
-			print_error(L, "\t%s	0x%08p", lua_typename(L, lua_type(L, i)), lua_topointer(L, i));
+			print_error(L, "%d. %s	0x%08p", i, lua_typename(L, lua_type(L, i)), lua_topointer(L, i));
 			break;
 		case LUA_TNUMBER:
-			print_error(L, "\t%s	%f", lua_typename(L, lua_type(L, i)), lua_tonumber(L, i));
+			print_error(L, "%d. %s	%f", i, lua_typename(L, lua_type(L, i)), lua_tonumber(L, i));
 			break;
 		case LUA_TSTRING:
-			print_error(L, "\t%s	%s", lua_typename(L, lua_type(L, i)), lua_tostring(L, i));
+			print_error(L, "%d. %s	%s", i, lua_typename(L, lua_type(L, i)), lua_tostring(L, i));
 			break;
 		case LUA_TTABLE:
-			print_error(L, "\t%s	0x%08p", lua_typename(L, lua_type(L, i)), lua_topointer(L, i));
+			print_error(L, "%d. %s	0x%08p", i, lua_typename(L, lua_type(L, i)), lua_topointer(L, i));
 			break;
 		case LUA_TFUNCTION:
-			print_error(L, "\t%s()	0x%08p", lua_typename(L, lua_type(L, i)), lua_topointer(L, i));
+			print_error(L, "%d. %s()	0x%08p", i, lua_typename(L, lua_type(L, i)), lua_topointer(L, i));
 			break;
 		case LUA_TUSERDATA:
-			print_error(L, "\t%s	0x%08p", lua_typename(L, lua_type(L, i)), lua_topointer(L, i));
+			print_error(L, "%d. %s	0x%08p", i, lua_typename(L, lua_type(L, i)), lua_topointer(L, i));
 			break;
 		case LUA_TTHREAD:
-			print_error(L, "\t%s", lua_typename(L, lua_type(L, i)));
+			print_error(L, "%d. %s", i, lua_typename(L, lua_type(L, i)));
 			break;
 		}
 	}
+    print_error(L, "----------LUA STACK----------");
 }
 
 /*---------------------------------------------------------------------------*/
@@ -424,6 +425,8 @@ bool lua_tinker::read(lua_State *L, int index)
 template<>
 void lua_tinker::read(lua_State *L, int index)
 {
+    (void)L;
+    (void)index;
 	return;
 }
 
