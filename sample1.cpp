@@ -21,7 +21,22 @@ public:
     int b;
 };
 
-int test_ref_arg(A& a, B& b)
+int test_arg8(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8)
+{
+    return arg1+arg2+arg3+arg4+arg5+arg6+arg7+arg8;
+}
+
+int test_arg7(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7)
+{
+    return arg1+arg2+arg3+arg4+arg5+arg6+arg7;
+}
+
+int test_arg6(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+{
+    return arg1+arg2+arg3+arg4+arg5+arg6;
+}
+
+int test_ref_arg(const A& a, const B& b)
 {
     return a.a + b.b;
 }
@@ -47,15 +62,18 @@ int main()
 
     A inst_a;
     inst_a.a = 11;
-    A& ref_a = inst_a;
+    const A& ref_a = inst_a;
 
     B inst_b;
     inst_b.b = 11;
-    B& ref_b = inst_b;
+    const B& ref_b = inst_b;
 
 	// LuaTinker 를 이용해서 함수를 등록한다.
 	lua_tinker::def(L, "cpp_func", cpp_func);
 	lua_tinker::def(L, "test_ref_arg", test_ref_arg);
+	lua_tinker::def(L, "test_arg6", test_arg6);
+	lua_tinker::def(L, "test_arg7", test_arg7);
+	lua_tinker::def(L, "test_arg8", test_arg8);
 
 	// sample1.lua 파일을 로드/실행한다.
 	lua_tinker::dofile(L, "sample1.lua");
@@ -66,7 +84,7 @@ int main()
 	// lua_func(3,4) 의 결과물 출력
 	printf("lua_func(3,4) = %d\n", result);
 
-    result = lua_tinker::call<int, A&, B&>(L, "lua_test_ref_arg", ref_a, ref_b);
+    result = lua_tinker::call<int>(L, "lua_test_ref_arg", ref_a, ref_b);
 	printf("lua_test_ref(ref_a,ref_b) = %d\n", result);
 
 	// 프로그램 종료
