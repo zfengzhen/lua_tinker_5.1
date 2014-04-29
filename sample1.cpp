@@ -66,7 +66,7 @@ int main()
 	// lua_func(3,4) 의 결과물 출력
 	printf("lua_func(3,4) = %d\n", result);
 
-    result = lua_tinker::call<int>(L, "lua_test_ref_arg", ref_a, ref_b);
+    result = lua_tinker::call<int, A&, B&>(L, "lua_test_ref_arg", ref_a, ref_b);
 	printf("lua_test_ref(ref_a,ref_b) = %d\n", result);
 
 	// 프로그램 종료
